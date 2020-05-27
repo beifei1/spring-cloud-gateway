@@ -7,6 +7,10 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingClass;
 import org.springframework.context.annotation.Configuration;
 
+
+/**
+ * 检查spring cloud 是否错误的导入spring-boot-starter-web
+ */
 @Configuration
 @AutoConfigureBefore(GatewayAutoConfiguration.class)
 public class GatewayClassPathWarningAutoConfiguration {
@@ -14,6 +18,10 @@ public class GatewayClassPathWarningAutoConfiguration {
 	private static final Log log = LogFactory.getLog(GatewayClassPathWarningAutoConfiguration.class);
 	private static final String BORDER = "\n\n**********************************************************\n\n";
 
+
+	/**
+	 * 类路径中存在Spring Web的DispacherServlet则进行提示
+	 */
 	@Configuration
 	@ConditionalOnClass(name = "org.springframework.web.servlet.DispatcherServlet")
 	protected static class SpringMvcFoundOnClasspathConfiguration {
@@ -25,6 +33,10 @@ public class GatewayClassPathWarningAutoConfiguration {
 
 	}
 
+
+	/**
+	 * 类路径中不存在Spring webFlux的DispatcherHandler是进行warn提示
+	 */
 	@Configuration
 	@ConditionalOnMissingClass("org.springframework.web.reactive.DispatcherHandler")
 	protected static class WebfluxMissingFromClasspathConfiguration {
