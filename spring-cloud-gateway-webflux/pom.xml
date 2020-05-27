@@ -11,7 +11,6 @@
 		<groupId>org.springframework.cloud</groupId>
 		<artifactId>spring-cloud-gateway</artifactId>
 		<version>2.0.5.BUILD-SNAPSHOT</version>
-		<relativePath/>
 	</parent>
 
 	<dependencies>

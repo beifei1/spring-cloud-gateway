@@ -6,7 +6,6 @@
 		<artifactId>spring-cloud-dependencies-parent</artifactId>
 		<groupId>org.springframework.cloud</groupId>
 		<version>2.0.5.BUILD-SNAPSHOT</version>
-		<relativePath/>
 	</parent>
 
 	<artifactId>spring-cloud-gateway-dependencies</artifactId>
