@@ -35,7 +35,7 @@ public class GatewayClassPathWarningAutoConfiguration {
 
 
 	/**
-	 * 类路径中不存在Spring webFlux的DispatcherHandler是进行warn提示
+	 * 类路径中不存在Spring webFlux的DispatcherHandler进行warn提示
 	 */
 	@Configuration
 	@ConditionalOnMissingClass("org.springframework.web.reactive.DispatcherHandler")

@@ -152,12 +152,22 @@ public class GatewayAutoConfiguration {
 	@Configuration
 	@ConditionalOnClass(HttpClient.class)
 	protected static class NettyConfiguration {
+
+
+		/**
+		 * order - 1.2
+		 * 使用options创建基于netty实现的HttpClient
+		 */
 		@Bean
 		@ConditionalOnMissingBean
 		public HttpClient httpClient(@Qualifier("nettyClientOptions") Consumer<? super HttpClientOptions.Builder> options) {
 			return HttpClient.create(options);
 		}
 
+		/**
+		 * order - 1.1
+		 * 创建nettyClientOptions
+		 */
 		@Bean
 		public Consumer<? super HttpClientOptions.Builder> nettyClientOptions(HttpClientProperties properties) {
 			return opts -> {
@@ -234,6 +244,10 @@ public class GatewayAutoConfiguration {
 			return new HttpClientProperties();
 		}
 
+		/**
+		 * order 1.3
+		 * 创建netty router filter对象
+		 */
 		@Bean
 		public NettyRoutingFilter routingFilter(HttpClient httpClient,
 												ObjectProvider<List<HttpHeadersFilter>> headersFilters,
@@ -241,11 +255,17 @@ public class GatewayAutoConfiguration {
 			return new NettyRoutingFilter(httpClient, headersFilters, properties);
 		}
 
+		//1.4
 		@Bean
 		public NettyWriteResponseFilter nettyWriteResponseFilter(GatewayProperties properties) {
 			return new NettyWriteResponseFilter(properties.getStreamingMediaTypes());
 		}
 
+		/**
+		 * 1.5 用于创建WebsocketRoutingFilter的Bean对象创建
+		 * @param options
+		 * @return
+		 */
 		@Bean
 		public ReactorNettyWebSocketClient reactorNettyWebSocketClient(@Qualifier("nettyClientOptions") Consumer<? super HttpClientOptions.Builder> options) {
 			return new ReactorNettyWebSocketClient(options);
@@ -270,24 +290,28 @@ public class GatewayAutoConfiguration {
 		return new RouteLocatorBuilder(context);
 	}
 
+	//4.1
 	@Bean
 	@ConditionalOnMissingBean
 	public PropertiesRouteDefinitionLocator propertiesRouteDefinitionLocator(GatewayProperties properties) {
 		return new PropertiesRouteDefinitionLocator(properties);
 	}
 
+	//4.2
 	@Bean
 	@ConditionalOnMissingBean(RouteDefinitionRepository.class)
 	public InMemoryRouteDefinitionRepository inMemoryRouteDefinitionRepository() {
 		return new InMemoryRouteDefinitionRepository();
 	}
 
+	//4.3
 	@Bean
 	@Primary
 	public RouteDefinitionLocator routeDefinitionLocator(List<RouteDefinitionLocator> routeDefinitionLocators) {
 		return new CompositeRouteDefinitionLocator(Flux.fromIterable(routeDefinitionLocators));
 	}
 
+	//4.4
 	@Bean
 	public RouteLocator routeDefinitionRouteLocator(GatewayProperties properties,
 												   List<GatewayFilterFactory> GatewayFilters,
@@ -296,6 +320,7 @@ public class GatewayAutoConfiguration {
 		return new RouteDefinitionRouteLocator(routeDefinitionLocator, predicates, GatewayFilters, properties);
 	}
 
+	//4.5
 	@Bean
 	@Primary
 	//TODO: property to disable composite?
@@ -317,7 +342,8 @@ public class GatewayAutoConfiguration {
 	public GlobalCorsProperties globalCorsProperties() {
 		return new GlobalCorsProperties();
 	}
-	
+
+	//用于匹配找到Route
 	@Bean
 	public RoutePredicateHandlerMapping routePredicateHandlerMapping(
 			FilteringWebHandler webHandler, RouteLocator routeLocator,
@@ -328,6 +354,10 @@ public class GatewayAutoConfiguration {
 
 	// ConfigurationProperty beans
 
+	/**
+	 * 用于加载配置文件的RoutingDefinition
+	 * @return
+	 */
 	@Bean
 	public GatewayProperties gatewayProperties() {
 		return new GatewayProperties();
@@ -364,11 +394,20 @@ public class GatewayAutoConfiguration {
 		return new AdaptCachedBodyGlobalFilter();
 	}
 
+	/**
+	 * 2.1
+	 * @return
+	 */
 	@Bean
 	public RouteToRequestUrlFilter routeToRequestUrlFilter() {
 		return new RouteToRequestUrlFilter();
 	}
 
+	/**
+	 * 2.2
+	 * @param dispatcherHandler
+	 * @return
+	 */
 	@Bean
 	@ConditionalOnBean(DispatcherHandler.class)
 	public ForwardRoutingFilter forwardRoutingFilter(ObjectProvider<DispatcherHandler> dispatcherHandler) {
@@ -380,11 +419,18 @@ public class GatewayAutoConfiguration {
 		return new ForwardPathFilter();
 	}
 
+	/**
+	 * 2.3
+	 * @return
+	 */
 	@Bean
 	public WebSocketService webSocketService() {
 		return new HandshakeWebSocketService();
 	}
 
+	/**
+	 * 2.4
+	 */
 	@Bean
 	public WebsocketRoutingFilter websocketRoutingFilter(WebSocketClient webSocketClient,
 														 WebSocketService webSocketService,
@@ -397,17 +443,6 @@ public class GatewayAutoConfiguration {
 		return new WeightCalculatorWebFilter(validator, routeLocator);
 	}
 
-	/*@Bean
-	//TODO: default over netty? configurable
-	public WebClientHttpRoutingFilter webClientHttpRoutingFilter() {
-		//TODO: WebClient bean
-		return new WebClientHttpRoutingFilter(WebClient.routes().build());
-	}
-
-	@Bean
-	public WebClientWriteResponseFilter webClientWriteResponseFilter() {
-		return new WebClientWriteResponseFilter();
-	}*/
 
 	// Predicate Factory beans
 
