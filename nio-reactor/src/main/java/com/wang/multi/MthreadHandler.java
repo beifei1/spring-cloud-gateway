@@ -7,6 +7,7 @@ import java.nio.channels.Selector;
 import java.nio.channels.SocketChannel;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.function.Function;
 
 /**
  * @Author: wangzhichao
@@ -21,7 +22,6 @@ class MthreadHandler implements Runnable
 	ByteBuffer output = ByteBuffer.allocate(1024);
 	static final int READING = 0, SENDING = 1;
 	int state = READING;
-
 
 	ExecutorService pool = Executors.newFixedThreadPool(2);
 	static final int PROCESSING = 3;
