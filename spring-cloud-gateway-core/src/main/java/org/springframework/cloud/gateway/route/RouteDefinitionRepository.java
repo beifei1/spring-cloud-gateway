@@ -18,6 +18,7 @@
 package org.springframework.cloud.gateway.route;
 
 /**
+ * 实现从存储器例 内存 Redis MYsql读取保存，删除路由路由配置
  * @author Spencer Gibb
  */
 public interface RouteDefinitionRepository extends RouteDefinitionLocator, RouteDefinitionWriter {

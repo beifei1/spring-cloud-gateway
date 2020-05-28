@@ -239,6 +239,10 @@ public class GatewayAutoConfiguration {
 			};
 		}
 
+		/**
+		 * httpclient参数配置
+		 * @return
+		 */
 		@Bean
 		public HttpClientProperties httpClientProperties() {
 			return new HttpClientProperties();

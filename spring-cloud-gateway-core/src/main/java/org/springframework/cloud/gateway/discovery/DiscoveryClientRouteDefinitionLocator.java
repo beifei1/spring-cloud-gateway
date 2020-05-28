@@ -36,6 +36,7 @@ import org.springframework.expression.spel.support.SimpleEvaluationContext;
 import org.springframework.util.StringUtils;
 
 /**
+ * 基于服务发现的路由声明，使用DiscoveryClient获取具体的服务列表，并创建路由声明
  * TODO: change to RouteLocator? use java dsl
  * @author Spencer Gibb
  */

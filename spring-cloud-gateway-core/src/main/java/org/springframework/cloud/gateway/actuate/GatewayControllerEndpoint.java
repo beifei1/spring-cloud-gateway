@@ -50,6 +50,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
+ * spring提供的端点，用于提供删除，新增路由等配置
  * @author Spencer Gibb
  */
 @RestControllerEndpoint(id = "gateway")
