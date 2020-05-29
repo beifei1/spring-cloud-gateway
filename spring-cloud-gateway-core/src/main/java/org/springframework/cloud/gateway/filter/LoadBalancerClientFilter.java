@@ -35,6 +35,8 @@ import static org.springframework.cloud.gateway.support.ServerWebExchangeUtils.a
 import reactor.core.publisher.Mono;
 
 /**
+ * 和Ribbon配合实现负载均衡过滤器
+ *
  * @author Spencer Gibb
  * @author Tim Ysewyn
  */
@@ -43,6 +45,7 @@ public class LoadBalancerClientFilter implements GlobalFilter, Ordered {
 	private static final Log log = LogFactory.getLog(LoadBalancerClientFilter.class);
 	public static final int LOAD_BALANCER_CLIENT_FILTER_ORDER = 10100;
 
+	//负载均衡Client
 	protected final LoadBalancerClient loadBalancer;
 
 	public LoadBalancerClientFilter(LoadBalancerClient loadBalancer) {
@@ -57,18 +60,25 @@ public class LoadBalancerClientFilter implements GlobalFilter, Ordered {
 	@Override
 	@SuppressWarnings("Duplicates")
 	public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
+		//获得URI
 		URI url = exchange.getAttribute(GATEWAY_REQUEST_URL_ATTR);
+		//获得前缀配置
 		String schemePrefix = exchange.getAttribute(GATEWAY_SCHEME_PREFIX_ATTR);
+		//如果为空或前缀不是以lb开头则直接提交到过滤器链
 		if (url == null || (!"lb".equals(url.getScheme()) && !"lb".equals(schemePrefix))) {
 			return chain.filter(exchange);
 		}
+
+		//添加原始请求URI到GATEWAY_ORIGINAL_REQUEST_URL_ATTR
 		//preserve the original url
 		addOriginalRequestUrl(exchange, url);
 
 		log.trace("LoadBalancerClientFilter url before: " + url);
 
+		//获得一个服务实例
 		final ServiceInstance instance = choose(exchange);
 
+		//判断是否获得实例，如果为空则直接抛出不能发现实例
 		if (instance == null) {
 			throw new NotFoundException("Unable to find instance for " + url.getHost());
 		}
@@ -86,6 +96,7 @@ public class LoadBalancerClientFilter implements GlobalFilter, Ordered {
 
 		log.trace("LoadBalancerClientFilter url chosen: " + requestUrl);
 		exchange.getAttributes().put(GATEWAY_REQUEST_URL_ATTR, requestUrl);
+		//提交给过滤器链处理
 		return chain.filter(exchange);
 	}
 
