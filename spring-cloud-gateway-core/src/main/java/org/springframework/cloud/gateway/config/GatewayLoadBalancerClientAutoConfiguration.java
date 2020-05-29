@@ -29,6 +29,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.reactive.DispatcherHandler;
 
 /**
+ * 加载负载均衡自动化配置
  * @author Spencer Gibb
  */
 @Configuration
