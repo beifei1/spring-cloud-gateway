@@ -91,6 +91,7 @@ public class NettyRoutingFilter implements GlobalFilter, Ordered {
 		URI requestUrl = exchange.getRequiredAttribute(GATEWAY_REQUEST_URL_ATTR);
 
 		String scheme = requestUrl.getScheme();
+		//已经路由或者非http https 直接过路由
 		if (isAlreadyRouted(exchange) || (!"http".equals(scheme) && !"https".equals(scheme))) {
 			return chain.filter(exchange);
 		}

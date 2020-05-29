@@ -35,6 +35,7 @@ import java.util.Collection;
 import java.util.List;
 
 /**
+ *
  * Configuration properties for the Netty {@link reactor.ipc.netty.http.client.HttpClient}
  */
 @ConfigurationProperties("spring.cloud.gateway.httpclient")

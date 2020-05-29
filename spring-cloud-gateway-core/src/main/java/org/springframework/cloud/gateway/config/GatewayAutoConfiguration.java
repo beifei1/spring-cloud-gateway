@@ -141,6 +141,7 @@ import static org.springframework.cloud.gateway.config.HttpClientProperties.Pool
  * @author Spencer Gibb
  */
 @Configuration
+//配置网关的开启与关闭，默认开启
 @ConditionalOnProperty(name = "spring.cloud.gateway.enabled", matchIfMissing = true)
 @EnableConfigurationProperties
 @AutoConfigureBefore(HttpHandlerAutoConfiguration.class)
@@ -240,7 +241,7 @@ public class GatewayAutoConfiguration {
 		}
 
 		/**
-		 * httpclient参数配置
+		 * 基于netty实现的httpclient参数配置
 		 * @return
 		 */
 		@Bean
@@ -249,7 +250,7 @@ public class GatewayAutoConfiguration {
 		}
 
 		/**
-		 * order 1.3
+		 * order 1.3 GlobalFilter
 		 * 创建netty router filter对象
 		 */
 		@Bean

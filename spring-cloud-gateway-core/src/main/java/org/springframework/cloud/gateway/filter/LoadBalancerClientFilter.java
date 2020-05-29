@@ -43,6 +43,7 @@ import reactor.core.publisher.Mono;
 public class LoadBalancerClientFilter implements GlobalFilter, Ordered {
 
 	private static final Log log = LogFactory.getLog(LoadBalancerClientFilter.class);
+	//loadbalancer filter的加载顺序
 	public static final int LOAD_BALANCER_CLIENT_FILTER_ORDER = 10100;
 
 	//负载均衡Client
