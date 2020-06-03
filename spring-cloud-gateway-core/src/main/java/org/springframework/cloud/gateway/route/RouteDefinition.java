@@ -38,23 +38,42 @@ import static org.springframework.util.StringUtils.tokenizeToStringArray;
  */
 @Validated
 public class RouteDefinition {
+
+	//路由声明的Id
 	@NotEmpty
 	private String id = UUID.randomUUID().toString();
 
+	//断言集合
 	@NotEmpty
 	@Valid
 	private List<PredicateDefinition> predicates = new ArrayList<>();
 
+
+	//过滤器声明集合
 	@Valid
 	private List<FilterDefinition> filters = new ArrayList<>();
 
+	//路由到的URI
 	@NotNull
 	private URI uri;
 
-	private int order = 0;
+	//跳转的顺序
+	private int order = 0; //排序
 
 	public RouteDefinition() {}
 
+
+	void test() {
+		RouteDefinition def = new RouteDefinition("UserRoute=/user,Host=www.baidu.com");
+	}
+
+	/**
+	 * 根据Text创建RouteDefinition
+	 * 格式：Id=Uri,Predicates[0],Predicates[1]...Predicates[n]
+	 * 例如：MyRoute=http://www.baidu.com,Host=*.searchxxx.com,addrequestparameter.org,Path=/get
+	 * @see {@link RouteDefinition#test()}
+	 * @param text
+	 */
 	public RouteDefinition(String text) {
 		int eqIdx = text.indexOf('=');
 		if (eqIdx <= 0) {

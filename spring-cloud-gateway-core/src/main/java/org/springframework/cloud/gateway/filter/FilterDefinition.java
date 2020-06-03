@@ -33,13 +33,32 @@ import static org.springframework.util.StringUtils.tokenizeToStringArray;
  */
 @Validated
 public class FilterDefinition {
+
+	/**
+	 * 过滤器名称
+	 */
 	@NotNull
 	private String name;
+	/**
+	 * 参数数组
+	 */
 	private Map<String, String> args = new LinkedHashMap<>();
 
 	public FilterDefinition() {
 	}
 
+	/**
+	 * 定义filter声明
+	 */
+	void test() {
+		FilterDefinition filterDefine = new FilterDefinition("addRequestParamter=foo,bar");
+	}
+
+	/**
+	 * 使用String创建filter声明
+	 * @see {@link FilterDefinition#test()}
+	 * @param text
+	 */
 	public FilterDefinition(String text) {
 		int eqIdx = text.indexOf('=');
 		if (eqIdx <= 0) {

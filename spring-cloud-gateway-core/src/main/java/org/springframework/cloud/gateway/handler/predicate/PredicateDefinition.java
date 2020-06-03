@@ -35,12 +35,24 @@ import static org.springframework.util.StringUtils.tokenizeToStringArray;
 @Validated
 public class PredicateDefinition {
 	@NotNull
-	private String name;
-	private Map<String, String> args = new LinkedHashMap<>();
+	private String name;  //谓语名称
+	private Map<String, String> args = new LinkedHashMap<>(); //参数数组
 
 	public PredicateDefinition() {
 	}
 
+	/**
+	 * 测试谓语定义
+	 */
+	void test() {
+		PredicateDefinition pre = new PredicateDefinition("Host=http://www.baidu.com");
+	}
+
+	/**
+	 * 使用String创建谓语定义
+	 * @see {@link PredicateDefinition#test()}
+	 * @param text
+	 */
 	public PredicateDefinition(String text) {
 		int eqIdx = text.indexOf('=');
 		if (eqIdx <= 0) {
