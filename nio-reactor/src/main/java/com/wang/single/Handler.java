@@ -5,6 +5,8 @@ import java.nio.ByteBuffer;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.SocketChannel;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * @Author: wangzhichao
@@ -12,6 +14,8 @@ import java.nio.channels.SocketChannel;
  */
 
 public class Handler implements Runnable {
+
+	ExecutorService service = Executors.newCachedThreadPool();
 
 	final SocketChannel channel;
 	final SelectionKey sk;
