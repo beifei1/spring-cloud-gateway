@@ -69,8 +69,6 @@ public class RouteDefinition {
 
 	/**
 	 * 根据Text创建RouteDefinition
-	 * 格式：Id=Uri,Predicates[0],Predicates[1]...Predicates[n]
-	 * 例如：MyRoute=http://www.baidu.com,Host=*.searchxxx.com,addrequestparameter.org,Path=/get
 	 * @see {@link RouteDefinition#test()}
 	 * @param text
 	 */

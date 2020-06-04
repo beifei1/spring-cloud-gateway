@@ -50,6 +50,7 @@ public class DiscoveryClientRouteDefinitionLocator implements RouteDefinitionLoc
 	public DiscoveryClientRouteDefinitionLocator(DiscoveryClient discoveryClient, DiscoveryLocatorProperties properties) {
 		this.discoveryClient = discoveryClient;
 		this.properties = properties;
+		//如果在配置文件中没有找到配置的前缀，则设置RouteDefinition前缀为类名+ 下斜线
 		if (StringUtils.hasText(properties.getRouteIdPrefix())) {
 			this.routeIdPrefix = properties.getRouteIdPrefix();
 		} else {
@@ -90,8 +91,10 @@ public class DiscoveryClientRouteDefinitionLocator implements RouteDefinitionLoc
 					String serviceId = instance.getServiceId();
 
                     RouteDefinition routeDefinition = new RouteDefinition();
+                    //设置RouteId
                     routeDefinition.setId(this.routeIdPrefix + serviceId);
 					String uri = urlExpr.getValue(evalCtxt, instance, String.class);
+
 					routeDefinition.setUri(URI.create(uri));
 
 					final ServiceInstance instanceForEval = new DelegatingServiceInstance(instance, properties);

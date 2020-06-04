@@ -30,11 +30,7 @@ import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.cloud.gateway.filter.factory.GatewayFilterFactory;
 import org.springframework.cloud.gateway.event.RefreshRoutesEvent;
-import org.springframework.cloud.gateway.route.Route;
-import org.springframework.cloud.gateway.route.RouteDefinition;
-import org.springframework.cloud.gateway.route.RouteDefinitionLocator;
-import org.springframework.cloud.gateway.route.RouteDefinitionWriter;
-import org.springframework.cloud.gateway.route.RouteLocator;
+import org.springframework.cloud.gateway.route.*;
 import org.springframework.cloud.gateway.support.NotFoundException;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.ApplicationEventPublisherAware;
@@ -82,6 +78,11 @@ public class GatewayControllerEndpoint implements ApplicationEventPublisherAware
 
 	// TODO: Add uncommited or new but not active routes endpoint
 
+	/**
+	 * 发布路由刷新事件
+	 * @see {@link CachingRouteLocator#handleRefresh()}
+	 * @return
+	 */
 	@PostMapping("/refresh")
 	public Mono<Void> refresh() {
 	    this.publisher.publishEvent(new RefreshRoutesEvent(this));

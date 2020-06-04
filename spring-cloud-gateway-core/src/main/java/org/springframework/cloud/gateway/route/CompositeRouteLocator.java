@@ -20,6 +20,7 @@ package org.springframework.cloud.gateway.route;
 import reactor.core.publisher.Flux;
 
 /**
+ * 组合多种RouteLocator类，为RoutePredicateHandlerMapping提供统一入口访问路由
  * @author Spencer Gibb
  */
 public class CompositeRouteLocator implements RouteLocator {

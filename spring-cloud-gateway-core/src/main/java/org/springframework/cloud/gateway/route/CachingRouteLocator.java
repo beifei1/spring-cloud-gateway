@@ -57,6 +57,9 @@ public class CachingRouteLocator implements RouteLocator {
 		return this.routes;
 	}
 
+	/**
+	 * 这里监听发布的路由刷新事件
+	 */
 	@EventListener(RefreshRoutesEvent.class)
 	/* for testing */ void handleRefresh() {
 		refresh();
